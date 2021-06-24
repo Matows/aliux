@@ -8,17 +8,21 @@
       </div>
 
       <p class="control is-expanded">
-        <input class="input" type="text" v-model="base_alias" name="from" placeholder="Alias base" />
+        <input class="input" type="text" v-model="base_alias" @input="$emit('search', $event.target.value)" name="from" placeholder="Alias base" />
       </p>
 
       <p class="control">
-        <a class="button has-background-white-ter" @click="change_hash()">{{ is_hashed ? '-' + hash : '' }}@{{ host }}</a>
+        <a class="button has-background-white-ter" @click="change_hash()">
+          {{ is_hashed ? '-' + hash : '' }}{{ isMobile ? '' : '@' + host }}
+        </a>
       </p>
 
       <div class="control">
-        <button @click="submit_alias()"
-                class="button"
-                :class="{ 'is-loading': aliasLoading }" >
+        <button
+          @click="submit_alias()"
+          class="button"
+          :class="{ 'is-loading': aliasLoading }"
+        >
           <fa-icon icon="plus"/>
         </button>
       </div>
@@ -49,6 +53,9 @@ export default {
     host() {
       return this.destination.split('@')[1];
     },
+    isMobile() {
+      return !(this.$grid.desktop || this.$grid.widescreen || this.$grid.fullhd);
+    }
   },
   methods: {
     toggle_hash() {

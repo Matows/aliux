@@ -1,12 +1,12 @@
 <template>
     <tr>
       <td>
+        <fa-icon icon="clipboard" @click="copy()"></fa-icon>
+      </td>
+      <td>
         <h4 class="title is-5 has-text-dark" @click="show_to = !show_to"> {{ from_name() }}<span class="has-text-grey">@{{ from_domain() }}</span></h4>
         <h6 v-if="show_to" class="subtitle is-6 has-text-grey"> {{ to }}</h6>
       </td>
-      <!-- <td>
-        <fa-icon icon="clipboard" @click="copy()"></fa-icon>
-      </td> -->
       <td>
         <fa-icon icon="trash" @click='remove_alias()'></fa-icon>
       </td>
@@ -42,6 +42,28 @@ export default {
           this.$emit('deleted', this.id);
         })
         .catch(err => console.log(err));
+    },
+    copy() {
+      let m = document;
+      let txt = m.createTextNode(this.from);
+      let w = window;
+      let b = m.body;
+      b.appendChild(txt);
+      if (b.createTextRange) {
+        let d = b.createTextRange();
+        d.moveToElementText(txt);
+        d.select();
+        m.execCommand('copy');
+      } else {
+        let d = m.createRange();
+        let g = w.getSelection;
+        d.selectNodeContents(txt);
+        g().removeAllRanges();
+        g().addRange(d);
+        m.execCommand('copy');
+        g().removeAllRanges();
+      }
+      txt.remove();
     },
   }
 }

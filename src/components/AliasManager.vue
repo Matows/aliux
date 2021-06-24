@@ -16,12 +16,13 @@
               :destination="destination"
               :alias-loading="aliasLoading"
               @add-alias="addAlias"
+              @search="onSearch"
             />
 
             <table class="table is-striped is-hoverable is-fullwidth">
               <tbody>
                 <AliasCard
-                  v-for='alias in sortedAlias'
+                  v-for='alias in aliases'
                   :key='alias.id'
                   :id='alias.id'
                   :from='alias.from'
@@ -43,6 +44,8 @@ import AliasControl from '@/components/AliasControl.vue';
 
 import { reactive } from 'vue';
 
+import Fuse from 'fuse.js';
+
 export default {
   name: 'AliasManager',
 
@@ -61,6 +64,12 @@ export default {
   data() {
     return {
       emails: [],
+      fuseOptions: {
+        shouldSort: true,
+        distance: 10,
+        includeMatches: true,
+      },
+      search: "",
       aliasLoading: true,
       ovh: require('ovh')({
         endpoint: 'ovh-eu',
@@ -78,18 +87,28 @@ export default {
 
   computed: {
     sortedAlias() {
-      function compare(a, b) {
-        if (a.from < b.from) {
-          return -1;
-        }
-        if (a.from > b.from) {
-          return 1;
-        }
-        return 0;
-      }
-      return [...this.emails].sort(compare);
+      return [...this.emails].sort(this.compare);
     },
+
+    searchAlias() {
+      let fuse = new Fuse(this.emails, {
+        keys: ['from'],
+        ...this.fuseOptions,
+      });
+
+      let result = fuse.search(this.search);
+      return result.map(el => el.item);
+    },
+
+    aliases() {
+      if (this.search) {
+        return this.searchAlias;
+      } else {
+        return this.sortedAlias;
+      }
+    }
   },
+
   methods: {
     update_aliases(emails) {
       this.aliasLoading = true;
@@ -138,6 +157,20 @@ export default {
         this.emails.splice(index, 1);
       }
     },
+
+    onSearch(value) {
+      this.search = value;
+    },
+
+    compare(a, b) {
+      if (a.from < b.from) {
+        return -1;
+      }
+      if (a.from > b.from) {
+        return 1;
+      }
+      return 0;
+    },
   },
   provide() {
     return {
@@ -145,7 +178,6 @@ export default {
     }
   },
   watch: {
-    // to update this.ovh
     appKey(newAppKey) { this.ovh.appKey = newAppKey; },
     appSecret(newAppSecret) { this.ovh.appSecret = newAppSecret },
     consumerKey(newConsumerKey) { this.ovh.consumerKey = newConsumerKey },

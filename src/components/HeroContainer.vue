@@ -13,3 +13,9 @@
     name: 'HeroContainer',
   }
 </script>
+
+<style scoped>
+div.container {
+  min-height: 100vh;
+}
+</style>
