@@ -8,7 +8,7 @@
       </div>
 
       <p class="control is-expanded">
-        <input class="input" type="text" v-model="base_alias" @input="$emit('search', $event.target.value)" name="from" placeholder="Alias base" />
+        <input class="input" type="text" v-model="base_alias" @input="$emit('search', $event.target.value)" name="from" placeholder="Alias base" autocomplete="off" />
       </p>
 
       <p class="control">
