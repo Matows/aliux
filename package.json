@@ -6,7 +6,7 @@
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
-    "asset": "vue-asset-generate -a src/assets/logo.svg --no-manifest",
+    "asset": "vue-asset-generate -a src/assets/logo.svg --no-manifest"
   },
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^1.2.35",
