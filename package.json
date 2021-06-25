@@ -1,11 +1,12 @@
 {
-  "name": "aliux",
-  "version": "0.1.0",
+  "name": "Aliux",
+  "version": "2.0.2",
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
-    "lint": "vue-cli-service lint"
+    "lint": "vue-cli-service lint",
+    "asset": "vue-asset-generate -a src/assets/logo.svg --no-manifest",
   },
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^1.2.35",
@@ -28,7 +29,9 @@
     "babel-eslint": "^10.1.0",
     "eslint": "^6.7.2",
     "eslint-plugin-vue": "^7.11.1",
+    "onchange": "^7.1.0",
     "sass": "^1.35.1",
-    "sass-loader": "^12.1.0"
+    "sass-loader": "^12.1.0",
+    "vue-pwa-asset-generator": "^1.6.0"
   }
 }
