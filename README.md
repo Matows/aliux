@@ -1,5 +1,7 @@
 # aliux
 
+example at https://alias.sinux.sh. It's a webapp, no data is stored on backend.
+
 ## Project setup
 ```
 npm install
